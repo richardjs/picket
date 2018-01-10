@@ -12,4 +12,6 @@ struct Board{
 };
 
 void Board_init(struct Board *board);
-void Board_moves(const struct Board *board, struct Board boards[]);
+int Board_moves(const struct Board *board, struct Board boards[]);
+
+void Board_print(const struct Board *board);

@@ -1,3 +1,5 @@
 CFLAGS=-std=c99 -Wall
 
-parca: board.o
+all: picket
+
+picket: board.o
