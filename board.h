@@ -1,3 +1,6 @@
+#ifndef BOARD_H
+#define BOARD_H
+
 #include <stdint.h>
 
 #define MAX_MOVES 48
@@ -15,3 +18,5 @@ void Board_init(struct Board *board);
 int Board_moves(const struct Board *board, struct Board boards[]);
 
 void Board_print(const struct Board *board);
+
+#endif

@@ -1,3 +1,10 @@
+print('#ifndef BITBOARDS_H')
+print('#define BITBOARDS_H')
+print('')
+print('#include <stdint.h>')
+print('')
+print('typedef uint64_t bitboard;')
+print('')
 print('const bitboard STRAIGHT_MOVES[2][64] = {{')
 for row in range(7):
 	right = ('0' * 8 * (row + 1)) + ','
@@ -34,6 +41,8 @@ for row in range(7):
 		print(left + '10000000' + right)
 print('}};')
 
+print('')
+
 print('const bitboard DIAGONAL_MOVES[2][64] = {{')
 for row in range(7):
 	right = ('0' * 8 * (row + 1)) + ','
@@ -69,3 +78,5 @@ for row in range(7):
 	else:
 		print(left + '01000000' + right)
 print('}};')
+print('')
+print('#endif')
