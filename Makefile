@@ -1,5 +1,5 @@
-CFLAGS=-std=c99 -Wall
+CFLAGS=-std=c99 -Wall -D NEGAMAX
 
 all: picket
 
-picket: board.o
+picket: board.o negamax.o

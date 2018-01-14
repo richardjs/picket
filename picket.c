@@ -1,7 +1,7 @@
 #include "board.h"
+#include "negamax.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 int main(int argc, char *argv[]){
 	fprintf(stderr, "Picket v.1a\n");
@@ -12,18 +12,15 @@ int main(int argc, char *argv[]){
 	}
 	fprintf(stderr, "input:%s\n", argv[1]);
 
-	srand(time(NULL));
-
 	struct Board board;
-	struct Board moves[MAX_MOVES];
-	char serialized[BOARD_SERIALIZED_LEN];
+	struct Board move;
 
 	Board_deserialize(argv[1], &board);
-	Board_serialize(&board, serialized);
 
-	int count = Board_moves(&board, moves);
+	search(&board, &move);
 
-	Board_serialize(&moves[rand() % count], serialized);
+	char serialized[BOARD_SERIALIZED_LEN];
+	Board_serialize(&move, serialized);
 	fprintf(stderr, "move: %s\n", serialized);
 	printf(serialized);
 
