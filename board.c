@@ -63,6 +63,48 @@ int Board_moves(const struct Board *board, struct Board boards[]){
 	return count;
 }
 
+void Board_serialize(const struct Board *board, char string[]){
+	for(int y = 0; y < 8; y++){
+		for(int x = 0; x < 8; x++){
+			bitboard space = 1ul << (y*8 + x);
+			char c;
+			if((board->bits[WHITE] & space) && !(board->bits[BLACK] & space)){
+				c = '1';
+			}else if(!(board->bits[WHITE] & space) && (board->bits[BLACK] & space)){
+				c = '2';
+			}else if((board->bits[WHITE] & space) && (board->bits[BLACK] & space)){
+				c = '!';
+			}else{
+				c = '0';
+			}
+			string[y*8 + x] = c;
+		}
+	}
+	string[64] = board->turn ? '2' : '1';
+	string[65] = '\0';
+}
+
+void Board_deserialize(const char string[], struct Board *board){
+	board->bits[WHITE] = 0ul;
+	board->bits[BLACK] = 0ul;
+	
+	for(int y = 0; y < 8; y++){
+		for(int x = 0; x < 8; x++){
+			switch(string[y*8 + x]){
+				case '1':
+					board->bits[WHITE] |= (1ul << (y*8 + x));
+					break;
+				case '2':
+					board->bits[BLACK] |= (1ul << (y*8 + x));
+					break;
+				default:
+					break;
+			}
+		}
+	}
+	board->turn = string[64] == '1' ? WHITE : BLACK;
+}
+
 void Board_print(const struct Board *board){
 	printf("----------------\n");
 	for(int y = 7; y >= 0; y--){
