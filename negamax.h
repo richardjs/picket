@@ -3,7 +3,7 @@
 
 #include "board.h"
 
-#define DEPTH 3
+#define DEPTH 5
 
 void search(const struct Board *board, struct Board *move);
 
