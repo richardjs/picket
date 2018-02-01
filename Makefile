@@ -1,4 +1,4 @@
-CFLAGS=-std=c99 -Wall -D NEGAMAX
+CFLAGS=-std=c99 -Wall -D NEGAMAX -O3
 
 all: picket
 
