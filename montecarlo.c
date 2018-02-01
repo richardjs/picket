@@ -26,6 +26,8 @@ enum Color simulate(const struct Board *root){
 }
 
 void search(const struct Board *root, struct Board *move){
+	fprintf(stderr, "montecarlo search\n");
+
 	struct timeval start;
 	gettimeofday(&start, NULL);
 
@@ -33,6 +35,12 @@ void search(const struct Board *root, struct Board *move){
 
 	struct Board moves[MAX_MOVES];
 	int count = Board_moves(root, moves);
+
+	if(count == -1){
+		fprintf(stderr, "taking win\n");
+		*move = moves[0];
+		return;
+	}
 	
 	int simsPerMove = SIMS/count;
 	int wins[MAX_MOVES] = {0};
