@@ -1,5 +1,5 @@
-#ifndef NEGAMAX_H
-#define NEGAMAX_H
+#ifndef MONTECARLO_H
+#define MONTECARLO_H
 
 #include "board.h"
 

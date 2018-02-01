@@ -1,8 +1,10 @@
-#include "negamax.h"
+#include "montecarlo.h"
 #include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+
+#define DEPTH 3
 
 int search_recursive(const struct Board *root, int depth){
 	struct Board moves[MAX_MOVES];
@@ -27,6 +29,7 @@ int search_recursive(const struct Board *root, int depth){
 }
 
 void search(const struct Board *board, struct Board *move){
+	fprintf(stderr, "negamax search\n");
 	srand(time(NULL));
 	
 	struct Board moves[MAX_MOVES];
