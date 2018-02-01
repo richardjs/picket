@@ -70,6 +70,8 @@ void search(const struct Board *root, struct Board *move){
 
 	fprintf(stderr, "score: %f\n", 2.0*mostWins/simsPerMove - 1);
 	fprintf(stderr, "time: %dms\n", duration);
+	fprintf(stderr, "simulations: %d\n", SIMS);
+	fprintf(stderr, "possible moves: %d\n", count);
 	fprintf(stderr, "sims per move: %d\n", simsPerMove);
 	fprintf(stderr, "mean sim depth: %.2f\n", (float)simMoves / (simsPerMove*count));
 
