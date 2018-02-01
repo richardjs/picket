@@ -1,4 +1,4 @@
-#include "negamax.h"
+#include "montecarlo.h"
 #include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>

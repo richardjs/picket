@@ -33,7 +33,7 @@ int Board_moves(const struct Board *board, struct Board boards[]){
 			child->bits[!turn] = board->bits[!turn];
 			child->turn = !turn;
 
-			if(child->bits[turn] & WIN_SPACES[turn]){
+			if((child->bits[turn] & WIN_SPACES[turn]) || child->bits[!turn] == 0){
 				boards[0] = *child;
 				return -1;
 			}
@@ -106,7 +106,7 @@ void Board_deserialize(const char string[], struct Board *board){
 }
 
 void Board_print(const struct Board *board){
-	printf("----------------\n");
+	fprintf(stderr, "----------------\n");
 	for(int y = 7; y >= 0; y--){
 		for(int x = 0; x < 8; x++){
 			bitboard space = 1ul << (y*8 + x);
@@ -120,17 +120,17 @@ void Board_print(const struct Board *board){
 			}else{
 				c = '-';
 			}
-			putchar(c);
+			putc(c, stderr);
 			if(x != 7){
 				putchar(' ');
 			}
 		}
 		if(board->turn == WHITE && y == 0){
-			printf("  T");
+			fprintf(stderr, "  T");
 		}else if(board->turn == BLACK && y == 7){
-			printf("  T");
+			fprintf(stderr, "  T");
 		}
-		putchar('\n');
+		putc('\n', stderr);
 	}
-	printf("----------------\n");
+	fprintf(stderr, "----------------\n");
 }

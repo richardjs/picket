@@ -24,15 +24,5 @@ int main(int argc, char *argv[]){
 	fprintf(stderr, "move: %s\n", serialized);
 	printf(serialized);
 
-	/*
-	board = moves[0];
-	count = Board_moves(&board, moves);
-	for(int i = 0; i < count; i++){
-		Board_print(&moves[i]);
-		Board_serialize(&moves[i], serialized);
-		printf("%s\n", serialized);
-	}
-	*/
-
 	return 0;
 }
