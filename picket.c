@@ -5,7 +5,7 @@
 #include <time.h>
 
 int main(int argc, char *argv[]){
-	fprintf(stderr, "Picket v.1a naive Monte Carlo\n");
+	fprintf(stderr, "Picket v.1a naive Monte Carlo, basic safe sims\n");
 
 	if(argc != 2){
 		fprintf(stderr, "usage: %s <board>\n", argv[0]);

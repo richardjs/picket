@@ -1,5 +1,6 @@
-#include "negamax.h"
+#include "montecarlo.h"
 #include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -20,7 +21,18 @@ enum Color simulate(const struct Board *root){
 			break;
 		}
 
-		board = moves[rand() % count];
+		int fails = 0;
+		while(1){
+			board = moves[rand() % count];
+			struct Board testMoves[MAX_MOVES];
+			if(Board_moves(&board, testMoves) != -1){
+				break;
+			}
+			fails++;
+			if(fails == 100){
+				break;
+			}
+		}
 	}
 	return board.turn;
 }
