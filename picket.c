@@ -1,11 +1,10 @@
 #include "board.h"
-#include "negamax.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
 int main(int argc, char *argv[]){
-	fprintf(stderr, "Picket v.1a naive Monte Carlo\n");
+	fprintf(stderr, "Picket v.1a random\n");
 
 	if(argc != 2){
 		fprintf(stderr, "usage: %s <board>\n", argv[0]);
@@ -18,7 +17,15 @@ int main(int argc, char *argv[]){
 
 	Board_deserialize(argv[1], &board);
 
-	search(&board, &move);
+	struct Board moves[MAX_MOVES];
+	int count = Board_moves(&board, moves);
+	if(count == -1){
+		fprintf(stderr, "taking win\n");
+		move = moves[0];
+	}else{
+		srand(time(NULL));
+		move = moves[rand() % count];
+	}
 
 	char serialized[BOARD_SERIALIZED_LEN];
 	Board_serialize(&move, serialized);
