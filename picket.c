@@ -11,7 +11,7 @@ int main(int argc, char *argv[]){
 		fprintf(stderr, "usage: %s <board>\n", argv[0]);
 		return 1;
 	}
-	fprintf(stderr, "input:%s\n", argv[1]);
+	fprintf(stderr, "input: %s\n", argv[1]);
 
 	struct Board board;
 	struct Board move;
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]){
 
 	char serialized[BOARD_SERIALIZED_LEN];
 	Board_serialize(&move, serialized);
-	fprintf(stderr, "move: %s\n", serialized);
+	fprintf(stderr, "output: %s\n", serialized);
 	printf(serialized);
 
 	return 0;
