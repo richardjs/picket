@@ -33,7 +33,7 @@ int Board_moves(const struct Board *board, struct Board boards[]){
 			child->bits[!turn] = board->bits[!turn];
 			child->turn = !turn;
 
-			if((child->bits[turn] & WIN_SPACES[turn]) || child->bits[!turn] == 0){
+			if(child->bits[turn] & WIN_SPACES[turn]){
 				boards[0] = *child;
 				return -1;
 			}
@@ -53,7 +53,7 @@ int Board_moves(const struct Board *board, struct Board boards[]){
 			child->bits[!turn] &= ~(1ul << move);
 			child->turn = !board->turn;
 
-			if(child->bits[turn] & WIN_SPACES[turn]){
+			if((child->bits[turn] & WIN_SPACES[turn]) || child->bits[!turn] == 0){
 				boards[0] = *child;
 				return -1;
 			}
