@@ -68,10 +68,18 @@ void search(const struct Board *root, struct Board *move){
 
 	int mostWins = -1;
 	int bestMove = 0;
+	int winsSum = 0;
+	int leastWins = SIMS;
 	for(int i = 0; i < count; i++){
+		winsSum += wins[i];
+
 		if(wins[i] > mostWins){
 			mostWins = wins[i];
 			bestMove = i;
+		}
+
+		if(wins[i] < leastWins){
+			leastWins = wins[i];
 		}
 	}
 
@@ -81,6 +89,8 @@ void search(const struct Board *root, struct Board *move){
 	int duration = (end.tv_sec - start.tv_sec)*1000 + (end.tv_usec - start.tv_usec)/1000;
 
 	fprintf(stderr, "score: %f\n", 2.0*mostWins/simsPerMove - 1);
+	fprintf(stderr, "mean score: %f\n", 2.0*((float)winsSum/count/simsPerMove) - 1);
+	fprintf(stderr, "worst score: %f\n", 2.0*leastWins/simsPerMove - 1);
 	fprintf(stderr, "time: %dms\n", duration);
 	fprintf(stderr, "simulations: %d\n", SIMS);
 	fprintf(stderr, "possible moves: %d\n", count);
