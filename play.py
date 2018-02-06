@@ -1,4 +1,5 @@
 import argparse
+import random
 import sys
 from subprocess import Popen, PIPE
 
@@ -15,12 +16,15 @@ parser = argparse.ArgumentParser()
 parser.add_argument('player1')
 parser.add_argument('player2')
 parser.add_argument('-n', '--num-games', type=int, default=1)
+parser.add_argument('-o', '--keep-order', action='store_false')
 args = parser.parse_args()
 
 def play_game(player1, player2):
 	win = False
 	position = '11111111111111110000000000000000000000000000000022222222222222221'
 	turns = [player1, player2]
+	if not args.keep_order:
+		random.shuffle(turns)
 	while not win:
 		player = turns.pop(0)
 		position, win = get_move(player, position)
