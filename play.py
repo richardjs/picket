@@ -22,6 +22,8 @@ parser.add_argument('-n', '--num-games', type=int, default=1)
 parser.add_argument('-o', '--keep-order', action='store_true')
 args = parser.parse_args()
 
+score = {}
+
 def play_game(player1, player2):
 	win = False
 	position = '11111111111111110000000000000000000000000000000022222222222222221'
@@ -31,15 +33,16 @@ def play_game(player1, player2):
 	while not win:
 		player = turns.pop(0)
 		position, win = get_move(player, position)
-		print()
+		print(score)
 		turns.append(player)
+		
 	return player
 
-score = {}
 try:
 	for _ in range(args.num_games):
 		winner = play_game(args.player1, args.player2)
 		score[winner] = score.get(winner, 0) + 1
 except KeyboardInterrupt:
 	pass
+
 print(score)
