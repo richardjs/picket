@@ -2,9 +2,10 @@
 #include "negamax.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int main(int argc, char *argv[]){
-	fprintf(stderr, "Picket v.1a\n");
+	fprintf(stderr, "Picket v.1a naive Monte Carlo\n");
 
 	if(argc != 2){
 		fprintf(stderr, "usage: %s <board>\n", argv[0]);
