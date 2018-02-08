@@ -1,4 +1,3 @@
-#include "bitboards.h"
 #include "board.h"
 #include <stdio.h>
 

@@ -1,6 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include "bitboards.h"
 #include <stdint.h>
 
 #define MAX_MOVES 48
