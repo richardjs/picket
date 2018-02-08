@@ -84,4 +84,53 @@ print('\t0b' + '11111111' + '0'*56 + ',')
 print('\t0b' + '0'*56 + '11111111')
 print('};')
 print('')
+
+print('const bitboard MOVE_CONES[2][64] = {{')
+
+for i in range(64):
+	left = i
+	right = i
+	bitboard = 0
+	while left < 64:
+		for bit in range(left, right+1):
+			bitboard |= (1 << bit)
+		if left % 8 == 0:
+			left += 8
+		else:
+			left += 7
+		if (right + 1) % 8 == 0:
+			right += 8
+		else:
+			right += 9
+	bitboard = bin(bitboard)[2:]
+	if i != 63:
+		print('\t', '0b' + '0'*(64-len(bitboard)) + bitboard + ',')
+	else:
+		print('\t', '0b' + '0'*(64-len(bitboard)) + bitboard)
+
+print('}, {')
+
+for i in range(64):
+	left = i
+	right = i
+	bitboard = 0
+	while left >= 0:
+		for bit in range(left, right+1):
+			bitboard |= (1 << bit)
+		if left % 8 == 0:
+			left -= 8
+		else:
+			left -= 9
+		if (right + 1) % 8 == 0:
+			right -= 8
+		else:
+			right -= 7
+	bitboard = bin(bitboard)[2:]
+	if i != 63:
+		print('\t', '0b' + '0'*(64-len(bitboard)) + bitboard + ',')
+	else:
+		print('\t', '0b' + '0'*(64-len(bitboard)) + bitboard)
+
+print('}};')
+print('')
 print('#endif')
