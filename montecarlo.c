@@ -1,3 +1,4 @@
+#include "bitboards.h"
 #include "montecarlo.h"
 #include <limits.h>
 #include <stdbool.h>
@@ -6,9 +7,67 @@
 #include <sys/time.h>
 #include <time.h>
 
+#define bitscan(x) __builtin_ctzl(x)
+#define lbitscan(x) (63 - __builtin_clzl(x))
+
 #define SIMS 100000
 
 int simMoves = 0;
+
+int winQuickSearch(const struct Board *root, enum Color testTurn, int space, int maxDepth){
+	// stop at max depth, returning 0
+	if(maxDepth == 0){
+		return 0;
+	}
+
+	// copy board and apply cone
+	struct Board board = *root;
+	bitboard cone = MOVE_CONES[testTurn][space];
+	board.bits[board.turn] &= cone;
+	board.bits[!board.turn] &= cone;
+	// if the cone filters out non-test turn pins, call it a win for the test turn
+	if(board.bits[!testTurn] == 0){
+		return board.turn == testTurn ? 0 : 0;
+	}
+	
+	// generate next moves
+	struct Board moves[MAX_MOVES + 1];
+	int count = Board_moves(&board, moves);
+	// if we have a win, return it
+	if(count == -1){
+		return 1;
+	}
+	// let the non-test turn skip turns, instead of moving
+	if(board.turn != testTurn){
+		moves[count] = board;
+		moves[count].turn = !board.turn;
+		count++;
+	}
+
+/*
+	int nextSpace;
+	if(testTurn == WHITE){
+		nextSpace = lbitscan(board.bits[WHITE]);
+	}else{
+		nextSpace = bitscan(board.bits[BLACK]);
+	}
+*/
+
+	// search for best result for us
+	int result = -1;
+	for(int i = 0; i < count; i++){
+		int r = winQuickSearch(&moves[i], testTurn, space, maxDepth-1);
+		// -1 indicates a loss for the next tier, so a win for us
+		if(r == -1){
+			return 1;
+		}
+		// if we have a 0, we have at least one move that's not a loss
+		if(r == 0){
+			result = 0;
+		}
+	}
+	return result;
+}
 
 enum Color simulate(const struct Board *root){
 	struct Board board = *root;	
@@ -21,18 +80,14 @@ enum Color simulate(const struct Board *root){
 			break;
 		}
 
-		int fails = 0;
-		while(1){
-			board = moves[rand() % count];
-			struct Board testMoves[MAX_MOVES];
-			if(Board_moves(&board, testMoves) != -1){
-				break;
-			}
-			fails++;
-			if(fails == 100){
-				break;
-			}
+		/*
+		int space = board.turn == WHITE ? lbitscan(board.bits[WHITE]) : bitscan(board.bits[BLACK]);
+		if(winQuickSearch(&board, board.turn, space, 20) == 1){
+			return board.turn;
 		}
+		*/
+
+		board = moves[rand() % count];
 	}
 	return board.turn;
 }
