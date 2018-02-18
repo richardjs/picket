@@ -1,8 +1,8 @@
-CFLAGS=-std=c99 -Wall -D NEGAMAX -O3
+CFLAGS=-std=c99 -Wall -lm -O3
 
 all: picket
 
-picket: bitboards.o board.o montecarlo.o
+picket: bitboards.o board.o mctssolver.o
 
 clean:
 	rm *.o

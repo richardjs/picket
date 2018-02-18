@@ -1,11 +1,11 @@
 #include "board.h"
-#include "negamax.h"
+#include "mctssolver.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
 int main(int argc, char *argv[]){
-	fprintf(stderr, "Picket v.1a naive Monte Carlo, basic safe sims\n");
+	fprintf(stderr, "Picket v.2a MCTS Solver, basic sims\n");
 
 	if(argc != 2){
 		fprintf(stderr, "usage: %s <board>\n", argv[0]);
@@ -18,7 +18,13 @@ int main(int argc, char *argv[]){
 
 	Board_deserialize(argv[1], &board);
 
-	search(&board, &move);
+	struct Board moves[MAX_MOVES];
+	if(Board_moves(&board, moves) == -1){
+		fprintf(stderr, "taking win\n");
+		move = moves[0];
+	}else{
+		search(&board, &move);
+	}
 
 	char serialized[BOARD_SERIALIZED_LEN];
 	Board_serialize(&move, serialized);
