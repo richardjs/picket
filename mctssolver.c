@@ -44,6 +44,19 @@ float simulate(const struct Board *root){
 			break;
 		}
 		board = moves[rand() % count];
+
+		int fails = 0;
+			while(1){
+			board = moves[rand() % count];
+			struct Board testMoves[MAX_MOVES];
+			if(Board_moves(&board, testMoves) != -1){
+				   break;
+			}
+			fails++;
+			if(fails == 100){
+				   break;
+			}
+		}
 	}
 	return root->turn == board.turn ? 1.0 : -1.0;
 }
