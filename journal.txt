@@ -1,0 +1,35 @@
+2018-02-01 17:13 Got a basic Monte Carlo search up and running on picket last night.
+On gliderii it does 100,000 simulations in 2-3 seconds, single-threaded with no GCC optimization flags. I pulled plato out from the archive to get some rough context, and in the same timeframe and on one thread it does just 4,000 simulation. plato is a much stronger player than picket in their respective games, so that just shows how slower but higher-quality simulations can beat quantity.
+
+Mean simulation depth seems to be right around 50 from starting position. Glen experienced similar numbers.
+
+2018-02-01 17:16 -O3 seems to cut time required for 100,000 in half, to ~1.5s
+
+2018-02-09 22:10 Tried first version of quick win searching today--that is, the idea that an approximate way of finding wins further down the tree (looking at limited cones and focusing on one piece) might help with the delayed sudden death nature of the game.
+It was not successful. Limited tests seemed to indicate the standard safe moves process was more effective. Shelving the idea for now.
+
+In the meantime, picket continues to hang its pieces. Not surprised, as that's in line with Monte Carlo's weakness. Planning on implementing MCTS-Solver next, and hopefully that helps.
+
+2018-02-09 23:24 It's possible progressive bias in the UCT selection of MCTS-Solver could be used to look more closely at capturing moves.
+
+2018-02-09 23:32 MCTS-Solver paper (Winands) uses a evaluation function every so often while simulating, and scores it as a win once a threshold is hit.
+This could be useful for ending simulations early if there's a massive imbalance in pins or something. Loses some accuracy, but might be worth testing.
+
+2018-02-18 15:47 Found a major bug in the mcts-solver implementation.
+It was choosing the last child in the search (bestChild = &child when we've got a new score, but child changes after the fact). Copying now from original source (root.children). So any experiments before now with MCTS-Solver should probably be invalidated.
+
+2018-02-18 15:53 UCT calculation was also off--it wasn't inverting the child's value, so it was selecting for worst childen.
+No wonder this thing wasn't working...
+
+2018-02-18 15:56 Well, I watched picket play OK after fixnig it.
+It boneheadedly (?) hung two pieces, and then won with a 2v2 force similar to what Glen and I just discovered and analyzed last Friday. Maybe a coincidence, but signs of progress!
+
+2018-02-18 16:03 OK, beat OK once more, and then lost one.
+All of these have picket as player 1. So progress, but still more work to do. Also, there's a crash or move output bug somewhere around win conditions (sometimes).
+
+2018-02-18 16:07 Bumped version to v.2a, on account of the imrovements MCTS-Solver brings.
+
+2018-02-18 22:19 Testing the current MCTS-Solver picket shows clear improvement over mc-simplesafe.
+Current standings on this play.py run are MCTSS 21, mc-simplesafe 6. However, it still loses to Ok regularly. Next areas for improvement may be better final move selection (right now we're only using value), UCT tuning, and progressive bias in UCT and simulations (and general simulation improvement--maybe even simplesafe). Good progress!
+
+I also should look more closely at the technical output. There might be clues there on optimizations.
