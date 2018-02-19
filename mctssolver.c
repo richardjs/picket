@@ -74,7 +74,7 @@ float solver(struct Node *root){
 		}
 		
 		float uct = -child->value + sqrtf(UCTC*logf(root->visits) / child->visits);
-		if(uct > bestUCT){
+		if(uct >= bestUCT){
 			selected = child;
 			bestUCT = uct;
 		}
@@ -132,7 +132,7 @@ void search(const struct Board *board, struct Board *move){
 		//fprintf(stderr, "value %f\n", child.value);
 		//fprintf(stderr, "score %f\n", score);
 
-		if(score > bestScore){
+		if(score >= bestScore){
 			//fprintf(stderr, "new best %d\n", i);
 			bestScore = score;
 			bestChild = &root.children[i];
