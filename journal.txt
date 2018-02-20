@@ -33,3 +33,9 @@ All of these have picket as player 1. So progress, but still more work to do. Al
 Current standings on this play.py run are MCTSS 21, mc-simplesafe 6. However, it still loses to Ok regularly. Next areas for improvement may be better final move selection (right now we're only using value), UCT tuning, and progressive bias in UCT and simulations (and general simulation improvement--maybe even simplesafe). Good progress!
 
 I also should look more closely at the technical output. There might be clues there on optimizations.
+
+2018-02-19 08:21 MCTSS with simplesafe clearly is stronger than naive MCTSS.
+
+2018-02-19 10:12 Secure child selection is not as strong as value selection, for these conditions.
+
+2018-02-19 18:17 Testing shows value is mostly better than visits for final move selection, and a UTCK of 1.0 is better than 0.1.
