@@ -6,7 +6,7 @@
 #include <time.h>
 
 #define ITERATIONS 100000
-#define UCTC 1.0
+#define UCTC 3.0
 #define SIM_THRESHOLD 1
 #define SCA 0.0
 
@@ -183,6 +183,7 @@ void search(const struct Board *board, struct Board *move){
 	fprintf(stderr, "visits: %d\n", bestChild->visits);
 	fprintf(stderr, "time: %dms\n", duration);
 	fprintf(stderr, "iterations: %d\n", ITERATIONS);
+	fprintf(stderr, "UCTC: %.2f\n", UCTC);
 	fprintf(stderr, "max tree depth: %d\n", maxDepth);
 
 	// TODO clean up root
