@@ -104,6 +104,16 @@ void Board_deserialize(const char string[], struct Board *board){
 	board->turn = string[64] == '1' ? WHITE : BLACK;
 }
 
+int Board_count_pieces(const struct Board *board, enum Color color){
+	int count = 0;
+	bitboard pieces = board->bits[color];
+	while(pieces){
+		count++;
+		pieces ^= (1ul << bitscan(pieces));
+	}
+	return count;
+}
+
 void Board_print(const struct Board *board){
 	fprintf(stderr, "----------------\n");
 	for(int y = 7; y >= 0; y--){
