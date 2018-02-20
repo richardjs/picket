@@ -114,6 +114,10 @@ int Board_count_pieces(const struct Board *board, enum Color color){
 	return count;
 }
 
+bool Board_is_capture(const struct Board *first, const struct Board *second){
+	return Board_count_pieces(first, second->turn) > Board_count_pieces(second, second->turn);
+}
+
 void Board_print(const struct Board *board){
 	fprintf(stderr, "----------------\n");
 	for(int y = 7; y >= 0; y--){
