@@ -7,6 +7,8 @@
 
 #define ITERATIONS 100000
 #define UCTC 3.0
+#define UCTW 100.0
+#define CAPTURE_PROBABILITY 0.75
 #define SIM_THRESHOLD 1
 #define SCA 0.0
 
@@ -86,7 +88,8 @@ float solver(struct Node *root){
 			break;
 		}
 		
-		float uct = -child->value + sqrtf(UCTC*logf(root->visits) / child->visits);
+		float transitionProbability = Board_is_capture(&(root->board), &(child->board)) ? CAPTURE_PROBABILITY : 1 - CAPTURE_PROBABILITY;
+		float uct = -child->value + sqrtf(UCTC*logf(root->visits) / child->visits) + (UCTW*transitionProbability / (child->visits+1));
 		if(uct >= bestUCT){
 			selected = child;
 			bestUCT = uct;
@@ -179,12 +182,13 @@ void search(const struct Board *board, struct Board *move){
 	}
 
 	fprintf(stderr, "score: %f\n", bestScore);
-	fprintf(stderr, "value: %f\n", -bestChild->value);
+	//fprintf(stderr, "value: %f\n", -bestChild->value);
 	fprintf(stderr, "visits: %d\n", bestChild->visits);
 	fprintf(stderr, "time: %dms\n", duration);
 	fprintf(stderr, "iterations: %d\n", ITERATIONS);
-	fprintf(stderr, "UCTC: %.2f\n", UCTC);
 	fprintf(stderr, "max tree depth: %d\n", maxDepth);
+	fprintf(stderr, "UCTC: %.2f\n", UCTC);
+	fprintf(stderr, "UCTW: %.2f\n", UCTW);
 
 	// TODO clean up root
 }
