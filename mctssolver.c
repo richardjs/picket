@@ -8,7 +8,7 @@
 #define ITERATIONS 100000
 #define UCTC 3.0
 #define UCTW 100.0
-#define CAPTURE_PROBABILITY 0.75
+#define CAPTURE_PROBABILITY 1.00
 #define SIM_THRESHOLD 1
 #define SCA 0.0
 
@@ -39,14 +39,27 @@ float simulate(const struct Board *root){
 	struct Board board = *root;	
 	struct Board moves[MAX_MOVES];
 	int count;
+	struct Board plainMoves[MAX_MOVES];
+	int plainCount;
+	struct Board captureMoves[MAX_MOVES];
+	int captureCount;
+
 	while(1){
 	//	simMoves++;
 		count = Board_moves(&board, moves);
 		if(count == -1){
 			break;
 		}
-		board = moves[rand() % count];
 
+		Board_sortMoves(&board, moves, count, plainMoves, &plainCount, captureMoves, &captureCount);
+		if(plainCount == 0 || (captureCount && (rand() % 100) < (CAPTURE_PROBABILITY * 100))){
+			board = captureMoves[rand() % captureCount];
+		}else{
+			board = plainMoves[rand() % plainCount];
+		}
+
+		//board = moves[rand() % count];
+		/*
 		int fails = 0;
 			while(1){
 			board = moves[rand() % count];
@@ -59,6 +72,7 @@ float simulate(const struct Board *root){
 				   break;
 			}
 		}
+		*/
 	}
 	return root->turn == board.turn ? 1.0 : -1.0;
 }
@@ -189,6 +203,7 @@ void search(const struct Board *board, struct Board *move){
 	fprintf(stderr, "max tree depth: %d\n", maxDepth);
 	fprintf(stderr, "UCTC: %.2f\n", UCTC);
 	fprintf(stderr, "UCTW: %.2f\n", UCTW);
+	fprintf(stderr, "capture bias: %.2f\n", CAPTURE_PROBABILITY);
 
 	// TODO clean up root
 }

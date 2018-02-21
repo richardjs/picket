@@ -118,6 +118,21 @@ bool Board_is_capture(const struct Board *first, const struct Board *second){
 	return Board_count_pieces(first, second->turn) > Board_count_pieces(second, second->turn);
 }
 
+void Board_sortMoves(const struct Board* board,
+		const struct Board moves[], const int moveCount,
+		struct Board plainMoves[], int *plainCount,
+		struct Board captureMoves[], int *captureCount){
+	*plainCount = 0;
+	*captureCount = 0;
+	for(int i = 0; i < moveCount; i++){
+		if(Board_is_capture(board, &moves[i])){
+			captureMoves[(*captureCount)++] = moves[i];
+		}else{
+			plainMoves[(*plainCount)++] = moves[i];
+		}
+	}
+}
+
 void Board_print(const struct Board *board){
 	fprintf(stderr, "----------------\n");
 	for(int y = 7; y >= 0; y--){

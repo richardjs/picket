@@ -26,5 +26,9 @@ void Board_print(const struct Board *board);
 
 int Board_count_pieces(const struct Board *board, enum Color color);
 bool Board_is_capture(const struct Board *first, const struct Board *second);
+void Board_sortMoves(const struct Board* board,
+		const struct Board moves[], const int moveCount,
+		struct Board plainMoves[], int *plainCount,
+		struct Board captureMoves[], int *captureCount);
 
 #endif
