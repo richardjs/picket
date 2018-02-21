@@ -39,3 +39,13 @@ I also should look more closely at the technical output. There might be clues th
 2018-02-19 10:12 Secure child selection is not as strong as value selection, for these conditions.
 
 2018-02-19 18:17 Testing shows value is mostly better than visits for final move selection, and a UTCK of 1.0 is better than 0.1.
+
+2018-02-20 12:22 PB-enabled (with guessed UCTW of .75) won 14-9 against simplesafe-uctc3
+
+2018-02-20 17:57 New move-biased sims have won 29-24 vs.
+simplesafe-uctc3. Not overwhelming by any stretch. Maybe adjusting the constants...
+
+2018-02-20 19:14 With capture probability = 1.00, capture bias sims is 16-0 agaist uctc3.
+Seems *too* much of an improvement. Doing further studying, and probably some double-checking...
+
+2018-02-20 19:30 Now won 20 straight, and hasn't lost to Ok either.
