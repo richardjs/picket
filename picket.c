@@ -5,7 +5,7 @@
 #include <time.h>
 
 int main(int argc, char *argv[]){
-	fprintf(stderr, "Picket v.3 MCTS Solver, third rank win sims\n");
+	fprintf(stderr, "Picket v.4 MCTS Solver, third rank win sims\n");
 
 	if(argc != 2){
 		fprintf(stderr, "usage: %s <board>\n", argv[0]);

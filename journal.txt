@@ -49,3 +49,6 @@ simplesafe-uctc3. Not overwhelming by any stretch. Maybe adjusting the constants
 Seems *too* much of an improvement. Doing further studying, and probably some double-checking...
 
 2018-02-20 19:30 Now won 20 straight, and hasn't lost to Ok either.
+
+2018-03-06 13:05 With a proper (or, at least not totally broken) implentation of TWR (third rank win pre-calculation), picket wins 15-7 against picket-v.3.
+Bumping version to v.4.
