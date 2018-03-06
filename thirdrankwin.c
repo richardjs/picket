@@ -20,7 +20,7 @@ void trwDestroy(){
 }
 
 bool trwCheck(const struct Board *board){
-	if(board->turn == WHITE){
+	if(board->turn == BLACK){
 		bitboard attackPos = (board->bits[WHITE] >> 40ul);
 		bitboard defensePos = (board->bits[BLACK] >> 48ul);
 		return data[attackPos + (defensePos << 8ul)];
