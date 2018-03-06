@@ -1,4 +1,5 @@
 #include "mctssolver.h"
+#include "thirdrankwin.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -49,6 +50,14 @@ float simulate(const struct Board *root){
 		count = Board_moves(&board, moves);
 		if(count == -1){
 			break;
+		}
+
+		for(int i = 0; i < count; i++){
+			if(trwCheck(&moves[i])){
+				//Board_print(&moves[i]);
+				//getchar();
+				break;
+			}
 		}
 
 		Board_sortMoves(&board, moves, count, plainMoves, &plainCount, captureMoves, &captureCount);
@@ -138,6 +147,9 @@ float solver(struct Node *root){
 
 void search(const struct Board *board, struct Board *move){
 	fprintf(stderr, "MCTS solver search\n");
+	fprintf(stderr, "loading thirdrankwin.dat...");
+	trwInit();
+	fprintf(stderr, " done!\n");
 
 	struct timeval start;
 	gettimeofday(&start, NULL);
