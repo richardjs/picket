@@ -52,12 +52,17 @@ float simulate(const struct Board *root){
 			break;
 		}
 
+		bool thirdrankwin = false;
 		for(int i = 0; i < count; i++){
 			if(trwCheck(&moves[i])){
 				//Board_print(&moves[i]);
 				//getchar();
+				thirdrankwin = true;
 				break;
 			}
+		}
+		if(thirdrankwin){
+			break;
 		}
 
 		Board_sortMoves(&board, moves, count, plainMoves, &plainCount, captureMoves, &captureCount);
