@@ -8,7 +8,7 @@ def get_move(player, board):
 	p = Popen((player, board), stdout=PIPE, stderr=PIPE)
 	win = False
 	for line in p.stderr.readlines():
-		if 'win' in line.decode('utf-8'):
+		if 'taking win' in line.decode('utf-8'):
 			win = True
 		sys.stdout.write('\t' + line.decode('utf-8'))
 	output = p.stdout.read().decode('utf-8')
