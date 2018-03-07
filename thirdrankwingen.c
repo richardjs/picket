@@ -5,7 +5,10 @@
 #include <time.h>
 
 const long BUFFER_SIZE = (1 << 24) * 2 * sizeof(bool);
-const bitboard MASK = ((0b111111111111111111111111ul) << 40ul) + (0b111111111111111111111111ul);
+const bitboard MASK[2] = {
+	0b111111111111111111111111ul << 40ul,
+	0b111111111111111111111111ul
+};
 
 int wins = 0;
 int notwins = 0;
@@ -28,12 +31,15 @@ bool search(const struct Board *root, enum Color attacker){
 			if(result){
 				return true;
 			}
-			return false;
 		}
+		return false;
 	}else{
 		for(int i = 0; i < count; i++){
 			struct Board move = moves[i];
-			//move.bits[!attacker] &= MASK;
+			move.bits[!attacker] &= MASK[attacker];
+			if(move.bits[!attacker] == 0){
+				continue;
+			}
 			bool result = search(&move, attacker);
 			if(!result){
 				return false;
@@ -49,6 +55,7 @@ int main(){
 	srand(1);
 	bool *buffer = malloc(BUFFER_SIZE);
 	bool result;
+
 	for(bitboard attackPos = 0; attackPos < (1 << 8); attackPos++){
 		for(bitboard defensePos = 0; defensePos < (1 << 16); defensePos++){
 			struct Board board;
