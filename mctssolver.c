@@ -6,7 +6,7 @@
 #include <sys/time.h>
 #include <time.h>
 
-#define ITERATIONS 100000
+#define ITERATIONS 10000
 #define UCTC 3.0
 #define UCTW 100.0
 #define CAPTURE_PROBABILITY 1.00
@@ -36,6 +36,33 @@ void Node_update(struct Node *node, float result){
 	node->value = (node->value*(node->visits-1) + result)/node->visits;
 }
 
+float evaluate(const struct Board *board){
+	return trwCheck(board) ? -INFINITY : 0.0f;
+}
+
+float negamax(const struct Board *root, int depth, float alpha, float beta){
+	if(depth == 0){
+		return evaluate(root);
+	}
+
+	struct Board moves[MAX_MOVES];
+	int count = Board_moves(root, moves);
+	float bestScore = -INFINITY;
+	for(int i = 0; i < count; i++){
+		float score = -negamax(&moves[i], depth-1, -beta, -alpha);
+		if(score > bestScore){
+			bestScore = score;
+		}
+		if(score > alpha){
+			alpha = score;
+		}
+		if(alpha >= beta){
+			break;
+		}
+	}
+	return bestScore;
+}
+
 float simulate(const struct Board *root){
 	struct Board board = *root;	
 	struct Board moves[MAX_MOVES];
@@ -52,6 +79,7 @@ float simulate(const struct Board *root){
 			break;
 		}
 
+		/*
 		bool thirdrankwin = false;
 		for(int i = 0; i < count; i++){
 			if(trwCheck(&moves[i])){
@@ -63,6 +91,15 @@ float simulate(const struct Board *root){
 		}
 		if(thirdrankwin){
 			break;
+		}
+		*/
+		for(int i = 0; i < count; i++){
+			float score = -negamax(&board, 2, -INFINITY, INFINITY);
+			if(score == INFINITY){
+				return root->turn == board.turn ? 1.0 : -1.0;
+			}else if(score == -INFINITY){
+				return root->turn == board.turn ? -1.0 : 1.0;
+			}
 		}
 
 		Board_sortMoves(&board, moves, count, plainMoves, &plainCount, captureMoves, &captureCount);
