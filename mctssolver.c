@@ -79,7 +79,6 @@ float simulate(const struct Board *root){
 			break;
 		}
 
-		/*
 		bool thirdrankwin = false;
 		for(int i = 0; i < count; i++){
 			if(trwCheck(&moves[i])){
@@ -91,15 +90,6 @@ float simulate(const struct Board *root){
 		}
 		if(thirdrankwin){
 			break;
-		}
-		*/
-		for(int i = 0; i < count; i++){
-			float score = -negamax(&board, 2, -INFINITY, INFINITY);
-			if(score == INFINITY){
-				return root->turn == board.turn ? 1.0 : -1.0;
-			}else if(score == -INFINITY){
-				return root->turn == board.turn ? -1.0 : 1.0;
-			}
 		}
 
 		Board_sortMoves(&board, moves, count, plainMoves, &plainCount, captureMoves, &captureCount);
