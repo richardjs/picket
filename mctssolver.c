@@ -82,6 +82,10 @@ void filterNodeChildren(struct Node *node){
 				node->children[j] = node->children[j+1];
 				scores[j] = scores[j+1];
 			}
+			if(node->childrenCount == 1){
+				fprintf(stderr, "stopping from filtering all moves\n");
+				break;
+			}
 			i--;
 			node->childrenCount--;
 		}
@@ -224,12 +228,21 @@ void search(const struct Board *board, struct Board *move){
 		Node_init(&root.children[i], &moves[i]);
 	}
 
-	fprintf(stderr, "filtering %d moves...\n", root.childrenCount);
-	filterNodeChildren(&root);
-	fprintf(stderr, "filtered down to %d moves\n", root.childrenCount);
-
 	for(int i = 0; i < ITERATIONS; i++){
 		solver(&root);
+	}
+
+	bool infFound = false;
+	for(int i = 0; i < root.childrenCount; i++){
+		if(root.children[i].value == INFINITY || root.children[i].value == -INFINITY){
+			infFound = true;
+			fprintf(stderr, "inf found; no more filtering\n");
+		}
+	}
+	if(!infFound){
+		fprintf(stderr, "filtering %d moves...\n", root.childrenCount);
+		filterNodeChildren(&root);
+		fprintf(stderr, "filtered down to %d moves\n", root.childrenCount);
 	}
 
 	float bestScore = -INFINITY;
