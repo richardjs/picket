@@ -6,7 +6,8 @@
 #include <sys/time.h>
 #include <time.h>
 
-#define ITERATIONS 10000
+#define ITERATIONS 100000
+#define FILTER_DEPTH 6
 #define UCTC 3.0
 #define UCTW 100.0
 #define CAPTURE_PROBABILITY 1.00
@@ -37,11 +38,14 @@ void Node_update(struct Node *node, float result){
 }
 
 float evaluate(const struct Board *board){
-	return trwCheck(board) ? -INFINITY : 0.0f;
+	if(trwCheck(board)){
+		return -INFINITY;
+	}
+	return Board_count_pieces(board, board->turn) - Board_count_pieces(board, !board->turn);
 }
 
 float negamax(const struct Board *root, int depth, float alpha, float beta){
-	if(depth == 0){
+	if(depth == 0 || trwCheck(root)){
 		return evaluate(root);
 	}
 
@@ -61,6 +65,28 @@ float negamax(const struct Board *root, int depth, float alpha, float beta){
 		}
 	}
 	return bestScore;
+}
+
+void filterNodeChildren(struct Node *node){
+	float scores[MAX_MOVES];
+	float bestScore = -INFINITY;
+	for(int i = 0; i < node->childrenCount; i++){
+		scores[i] = -negamax(&node->children[i].board, FILTER_DEPTH, -INFINITY, INFINITY);
+		if(scores[i] > bestScore){
+			bestScore = scores[i];
+		}
+	}
+	for(int i = 0; i < node->childrenCount; i++){
+		if(scores[i] < bestScore){
+			for(int j = i; j < node->childrenCount-1; j++){
+				node->children[j] = node->children[j+1];
+				scores[j] = scores[j+1];
+			}
+			i--;
+			node->childrenCount--;
+		}
+	}
+	fprintf(stderr, "filter score: %.2f\n", bestScore);
 }
 
 float simulate(const struct Board *root){
@@ -191,6 +217,16 @@ void search(const struct Board *board, struct Board *move){
 
 	struct Node root;
 	Node_init(&root, board);
+	struct Board moves[MAX_MOVES];
+	root.childrenCount = Board_moves(&root.board, moves);
+	root.children = malloc(sizeof(struct Node) * root.childrenCount);
+	for(int i = 0; i < root.childrenCount; i++){
+		Node_init(&root.children[i], &moves[i]);
+	}
+
+	fprintf(stderr, "filtering %d moves...\n", root.childrenCount);
+	filterNodeChildren(&root);
+	fprintf(stderr, "filtered down to %d moves\n", root.childrenCount);
 
 	for(int i = 0; i < ITERATIONS; i++){
 		solver(&root);
