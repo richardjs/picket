@@ -7,7 +7,7 @@
 #include <time.h>
 
 #define ITERATIONS 100000
-#define FILTER_DEPTH 6
+#define FILTER_DEPTH 5
 #define UCTC 3.0
 #define UCTW 100.0
 #define CAPTURE_PROBABILITY 1.00
@@ -240,7 +240,7 @@ void search(const struct Board *board, struct Board *move){
 		}
 	}
 	if(!infFound){
-		fprintf(stderr, "filtering %d moves...\n", root.childrenCount);
+		fprintf(stderr, "filtering %d moves with depth %d...\n", root.childrenCount, FILTER_DEPTH);
 		filterNodeChildren(&root);
 		fprintf(stderr, "filtered down to %d moves\n", root.childrenCount);
 	}
