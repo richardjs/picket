@@ -11,7 +11,7 @@
 #define UCTC 3.0
 #define UCTW 100.0
 #define CAPTURE_PROBABILITY 1.00
-#define SIM_THRESHOLD 1
+#define SIM_THRESHOLD 10
 #define SCA 0.0
 
 struct Node{
@@ -237,6 +237,7 @@ void search(const struct Board *board, struct Board *move){
 		if(root.children[i].value == INFINITY || root.children[i].value == -INFINITY){
 			infFound = true;
 			fprintf(stderr, "inf found; no more filtering\n");
+			break;
 		}
 	}
 	if(!infFound){
