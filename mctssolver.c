@@ -51,6 +51,9 @@ float negamax(const struct Board *root, int depth, float alpha, float beta){
 
 	struct Board moves[MAX_MOVES];
 	int count = Board_moves(root, moves);
+	if(count == -1){
+		return INFINITY;
+	}
 	float bestScore = -INFINITY;
 	for(int i = 0; i < count; i++){
 		float score = -negamax(&moves[i], depth-1, -beta, -alpha);
@@ -234,7 +237,7 @@ void search(const struct Board *board, struct Board *move){
 
 	bool infFound = false;
 	for(int i = 0; i < root.childrenCount; i++){
-		if(root.children[i].value == INFINITY || root.children[i].value == -INFINITY){
+		if(root.children[i].value == -INFINITY){
 			infFound = true;
 			fprintf(stderr, "inf found; no more filtering\n");
 			break;
