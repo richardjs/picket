@@ -15,6 +15,12 @@ int notwins = 0;
 
 bool search(const struct Board *root, enum Color attacker){
 	struct Board moves[MAX_MOVES];
+	if(root->bits[attacker] == 0){
+		return false;
+	}
+	if(root->bits[!attacker] == 0){
+		return true;
+	}
 	int count = Board_moves(root, moves);
 
 	if(count ==  -1){

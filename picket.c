@@ -17,6 +17,7 @@ int main(int argc, char *argv[]){
 	struct Board move;
 
 	Board_deserialize(argv[1], &board);
+	Board_print(&board);
 
 	struct Board moves[MAX_MOVES];
 	if(Board_moves(&board, moves) == -1){
@@ -29,6 +30,7 @@ int main(int argc, char *argv[]){
 	char serialized[BOARD_SERIALIZED_LEN];
 	Board_serialize(&move, serialized);
 	fprintf(stderr, "output: %s\n", serialized);
+	Board_print(&move);
 	printf(serialized);
 
 	return 0;

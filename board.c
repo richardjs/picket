@@ -150,7 +150,7 @@ void Board_print(const struct Board *board){
 			}
 			putc(c, stderr);
 			if(x != 7){
-				putchar(' ');
+				putc(' ', stderr);
 			}
 		}
 		if(board->turn == WHITE && y == 0){
