@@ -71,6 +71,11 @@ float negamax(const struct Board *root, int depth, float alpha, float beta){
 }
 
 void filterNodeChildren(struct Node *node){
+	if(trwCheck(&node->board)){
+		fprintf(stderr, "filter root TWR loss, aborting filtering\n");
+		return;
+	}
+
 	float scores[MAX_MOVES];
 	float bestScore = -INFINITY;
 	for(int i = 0; i < node->childrenCount; i++){
