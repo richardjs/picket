@@ -3,6 +3,6 @@
 
 #include "board.h"
 
-void search(const struct Board *board, struct Board *move);
+void search(const struct Board *board, struct Board *move, unsigned int iterations);
 
 #endif

@@ -6,7 +6,6 @@
 #include <sys/time.h>
 #include <time.h>
 
-#define ITERATIONS 100000
 #define FILTER_DEPTH 5
 #define UCTC 3.0
 #define UCTW 100.0
@@ -215,7 +214,7 @@ float solver(struct Node *root){
 	return r;
 }
 
-void search(const struct Board *board, struct Board *move){
+void search(const struct Board *board, struct Board *move, unsigned int iterations){
 	fprintf(stderr, "MCTS solver search\n");
 	fprintf(stderr, "loading thirdrankwin.dat...");
 	trwInit();
@@ -236,7 +235,7 @@ void search(const struct Board *board, struct Board *move){
 		Node_init(&root.children[i], &moves[i]);
 	}
 
-	for(int i = 0; i < ITERATIONS; i++){
+	for(int i = 0; i < iterations; i++){
 		solver(&root);
 	}
 
@@ -301,7 +300,7 @@ void search(const struct Board *board, struct Board *move){
 	//fprintf(stderr, "value: %f\n", -bestChild->value);
 	fprintf(stderr, "visits: %d\n", bestChild->visits);
 	fprintf(stderr, "time: %dms\n", duration);
-	fprintf(stderr, "iterations: %d\n", ITERATIONS);
+	fprintf(stderr, "iterations: %d\n", iterations);
 	fprintf(stderr, "max tree depth: %d\n", maxDepth);
 	fprintf(stderr, "UCTC: %.2f\n", UCTC);
 	fprintf(stderr, "UCTW: %.2f\n", UCTW);

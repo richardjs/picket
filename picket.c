@@ -1,14 +1,30 @@
 #include "board.h"
 #include "mctssolver.h"
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
+#define DEFAULT_ITERATIONS 100000
+
 int main(int argc, char *argv[]){
 	fprintf(stderr, "Picket v1 (%s %s)\n", __DATE__, __TIME__);
 
-	if(argc != 2){
-		fprintf(stderr, "usage: %s <board>\n", argv[0]);
+	int opt;
+	unsigned int iterations = DEFAULT_ITERATIONS;
+	while((opt = getopt(argc, argv, "i:")) != -1 ){
+		switch(opt){
+			case 'i':
+				iterations = atoi(optarg);		
+				break;
+			default:
+				fprintf(stderr, "usage: %s [-i iterations] <board>\n", argv[0]);
+				return 1;
+		}
+	}
+
+	if(argc == optind || iterations < 1){
+		fprintf(stderr, "usage: %s [-i iterations] <board>\n", argv[0]);
 		return 1;
 	}
 	fprintf(stderr, "input: %s\n", argv[1]);
@@ -24,7 +40,7 @@ int main(int argc, char *argv[]){
 		fprintf(stderr, "taking win\n");
 		move = moves[0];
 	}else{
-		search(&board, &move);
+		search(&board, &move, iterations);
 	}
 
 	char serialized[BOARD_SERIALIZED_LEN];
