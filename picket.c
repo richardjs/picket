@@ -27,12 +27,12 @@ int main(int argc, char *argv[]){
 		fprintf(stderr, "usage: %s [-i iterations] <board>\n", argv[0]);
 		return 1;
 	}
-	fprintf(stderr, "input: %s\n", argv[1]);
+	fprintf(stderr, "input: %s\n", argv[optind]);
 
 	struct Board board;
 	struct Board move;
 
-	Board_deserialize(argv[1], &board);
+	Board_deserialize(argv[optind], &board);
 	Board_print(&board);
 
 	struct Board moves[MAX_MOVES];
