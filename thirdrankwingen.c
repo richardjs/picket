@@ -14,16 +14,22 @@ int wins = 0;
 int notwins = 0;
 
 bool search(const struct Board *root, enum Color attacker){
-	struct Board moves[MAX_MOVES];
+	struct Board moves[MAX_MOVES+1];
 	if(root->bits[attacker] == 0){
 		return false;
 	}
 	if(root->bits[!attacker] == 0){
 		return true;
 	}
-	int count = Board_moves(root, moves);
 
-	if(count ==  -1){
+	int count = Board_moves(root, moves);
+	if(count > 0 && root->turn == !attacker){
+		moves[count] = *root;
+		moves[count].turn = !root->turn;
+		count++;
+	}
+
+	if(count == -1){
 		if(root->turn == attacker){
 			return true;
 		}
@@ -87,7 +93,7 @@ int main(){
 			board.bits[WHITE] = (defensePos << 0ul);
 			board.bits[BLACK] = (attackPos << 16ul);
 			board.turn = WHITE;
-			result =  search(&board, BLACK);
+			result = search(&board, BLACK);
 			buffer[(1 << 24) + attackPos + (defensePos << 8ul)] = result;
 			if(result){
 				wins++;
